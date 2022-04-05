@@ -11,52 +11,6 @@ __interrupt void UnimplementedISR(void)
    asm BGND;
 }
 
-#pragma CODE_SEG __NEAR_SEG NON_BANKED
-__interrupt void serialISR() 
-{
-  int j, i;
-  int k = 0;
-  char outputString[12] = " detected\r\n";
-  
-  // Check if data is received. The RDRF flag
-  if (SCI1SR1 & 0x20) 
-  {
-    // End of sentence? Look for a carriage return
-    if (SCI1DRL == 0x0D) 
-    {
-      // Don't do anything unless you are ready to send data. The TDRE flag
-      // May not need this line since I do it again below
-      while(!(SCI1SR1 & 0x80));
-      
-      // Go through all characters in buffer
-      for (k = 0; k < j; k++) 
-      {
-        // Wait for data to be ready
-        while(!(SCI1SR1 & 0x80));
-        
-        // Write to serial
-        SCI1DRL = buffer[k];
-        
-        // Write the rest of the appended string
-        for (i = 0; i < 12; i++) 
-        {
-          while(!(SCI1SR1 & 0x80));
-          SCI1DRL = outputString[i];
-        }
-      }
-      
-      // Reset buffer
-      j = 0;
-    } 
-    
-    // Store each character of sentence in buffer
-    else
-    {
-      buffer[j] = SCI1DRL;
-      j = j + 1;
-    }
-  }
-}
 
 
 
@@ -104,7 +58,7 @@ const tIsrFunc _vect[] @0xFF80 = {     /* Interrupt table */
         UnimplementedISR,                 /* vector 0x18 (PORT J) */
         UnimplementedISR,                 /* vector 0x17 (ATD1) */
         UnimplementedISR,                 /* vector 0x16 (ATD0) */
-        serialISR, /* vector 0x15 (SCI1) */
+        UnimplementedISR,                 /* vector 0x15 (SCI1) */
         UnimplementedISR,                 /* vector 0x14 (SCI0) */
         UnimplementedISR,                 /* vector 0x13 */
         UnimplementedISR,                 /* vector 0x12 */
