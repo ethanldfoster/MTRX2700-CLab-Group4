@@ -1,3 +1,6 @@
+char buffer[500];
+int j = 0;
+
 #include <hidef.h>      /* common defines and macros */
 #include "derivative.h"      /* derivative-specific definitions */
 #include "isr_vectors.c"
@@ -5,8 +8,7 @@
 void serialRegisters(void);
 __interrupt void serialISR(void);
 
-char buffer[500];
-int j = 0;
+
 
 void main(void) 
 {
