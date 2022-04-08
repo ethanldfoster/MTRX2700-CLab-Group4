@@ -27,8 +27,8 @@ Entry point: 0xC000 (_Startup)
 _startupData is allocated at 0xC00B and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
-  _Range   pZeroOut       0x1100     531
-  _Copy    *toCopyDownBeg 0xC050
+  _Range   pZeroOut       0x1100     534
+  _Copy    *toCopyDownBeg 0xC069
 } _startupData;
 
 *********************************************************************************************
@@ -38,11 +38,11 @@ Section Name                    Size  Type     From       To       Segment
 .init                             11     R     0xC000     0xC00A   ROM_C000
 .startData                        10     R     0xC00B     0xC014   ROM_C000
 .rodata1                          15     R     0xC015     0xC023   ROM_C000
-NON_BANKED                        44     R     0xC024     0xC04F   ROM_C000
-.copy                             19     R     0xC050     0xC062   ROM_C000
-.text                            254     R   0x308000   0x3080FD   PAGE_30
+NON_BANKED                        69     R     0xC024     0xC068   ROM_C000
+.copy                             20     R     0xC069     0xC07C   ROM_C000
+.text                            340     R   0x308000   0x308153   PAGE_30
 .stack                           256   R/W     0x1000     0x10FF   RAM
-.data                             13   R/W     0x1100     0x110C   RAM
+.data                             14   R/W     0x1100     0x110D   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
 .abs_section_a                     1   N/I        0xA        0xA   .absSeg2
@@ -385,13 +385,13 @@ NON_BANKED                        44     R     0xC024     0xC04F   ROM_C000
 .abs_section_2ae                   2   N/I      0x2AE      0x2AF   .absSeg339
 .abs_section_2be                   2   N/I      0x2BE      0x2BF   .absSeg340
 .abs_section_ff80                126     R     0xFF80     0xFFFD   .absSeg341
-.bss                               6   R/W     0x110D     0x1112   RAM
-.common                          512   R/W     0x1113     0x1312   RAM
+.bss                               8   R/W     0x110E     0x1115   RAM
+.common                          512   R/W     0x1116     0x1315   RAM
 .vectSeg342_vect                   2     R     0xFFFE     0xFFFF   .vectSeg342
 
 Summary of section sizes per section type:
-READ_ONLY (R):         1E1 (dec:      481)
-READ_WRITE (R/W):      313 (dec:      787)
+READ_ONLY (R):         251 (dec:      593)
+READ_WRITE (R/W):      316 (dec:      790)
 NO_INIT (N/I):         190 (dec:      400)
 
 *********************************************************************************************
@@ -489,7 +489,7 @@ MODULE:                 -- mc9s12dg256.c.o --
      _SCI0DRH                                    CE       1       1       0   .abs_section_ce
      _SCI0DRL                                    CF       1       1       0   .abs_section_cf
      _SCI1CR1                                    D2       1       1       0   .abs_section_d2
-     _SCI1CR2                                    D3       1       1       0   .abs_section_d3
+     _SCI1CR2                                    D3       1       1       1   .abs_section_d3
      _SCI1SR1                                    D4       1       1       0   .abs_section_d4
      _SCI1SR2                                    D5       1       1       0   .abs_section_d5
      _SCI1DRH                                    D6       1       1       0   .abs_section_d6
@@ -750,18 +750,18 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     main                                    308000      3D      61       2   .text       
+     main                                    308000      44      68       2   .text       
 - VARIABLES:
      STRING.This.is.a.test.1                   C015       F      15       1   .rodata1    
-     bookend                                   1100       1       1       1   .data       
-     serial_port                               1101       C      12       4   .data       
-     string_ready                              110D       2       2       2   .bss        
-     mode                                      110F       2       2       1   .bss        
-     out_buffer                                1113     100     256       2   .common     
-     trans_buffer                              1213     100     256       1   .common     
+     bookend                                   1100       1       1       2   .data       
+     serial_port                               1101       C      12       6   .data       
+     string_ready                              110E       2       2       2   .bss        
+     mode                                      1110       2       2       1   .bss        
+     out_buffer                                1116     100     256       2   .common     
+     trans_buffer                              1216     100     256       2   .common     
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
-     Init                                    30803D      29      41       2   .text       
+     Init                                    308044      29      41       2   .text       
      _Startup                                  C000       B      11       0   .init       
 - VARIABLES:
      _startupData                              C00B       6       6       3   .startData  
@@ -769,7 +769,7 @@ MODULE:                 -- Start12.c.o --
      __SEG_END_SSTACK                          1100       0       0       1               
 MODULE:                 -- STRING.C.o (ansib.lib) --
 - PROCEDURES:
-     strcpy                                  308066       D      13       2   .text       
+     strcpy                                  30806D       D      13       2   .text       
 - VARIABLES:
 MODULE:                 -- rtshc12.c.o (ansib.lib) --
 - PROCEDURES:
@@ -777,42 +777,46 @@ MODULE:                 -- rtshc12.c.o (ansib.lib) --
 - VARIABLES:
 MODULE:                 -- isr_vectors.c.o --
 - PROCEDURES:
-     UnimplementedISR                          C038       2       2      62   NON_BANKED  
+     UnimplementedISR                          C038       2       2      61   NON_BANKED  
 - VARIABLES:
      _vect                                     FF80      7E     126       0   .abs_section_ff80
 MODULE:                 -- Serial.c.o --
 - PROCEDURES:
-     serial_setup                            308073      3C      60       2   .text       
-     configure_serial_interrupts             3080AF       9       9       2   .text       
-     read_char                               3080B8      34      52       2   .text       
-     get_next_command                        3080EC      12      18       2   .text       
-     serial_ISR                                C03A      16      22       1   NON_BANKED  
+     serial_setup                            30807A      3C      60       2   .text       
+     configure_serial_interrupts             3080B6       9       9       2   .text       
+     read_char                               3080BF      34      52       2   .text       
+     get_next_command                        3080F3      12      18       2   .text       
+     send_char                               308105      11      17       4   .text       
+     send_message                            308116      3E      62       2   .text       
+     serial_ISR                                C03A      2F      47       2   NON_BANKED  
 - VARIABLES:
-     counter.1                                 1111       2       2       4   .bss        
+     test_char                                 110D       1       1       1   .data       
+     counter.1                                 1112       2       2       4   .bss        
+     index.2                                   1114       2       2       4   .bss        
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12dg256.c.o                            400      0      0
-  main.c.o                                   529     61     15
+  main.c.o                                   529     68     15
   Start12.c.o                                  0     52      0
   STRING.C.o (ansib.lib)                       0     13      0
   rtshc12.c.o (ansib.lib)                      0     20      0
   isr_vectors.c.o                              0      2    126
-  Serial.c.o                                   2    161      0
-  other                                      256     12     19
+  Serial.c.o                                   5    265      0
+  other                                      256     12     20
 
 *********************************************************************************************
 SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
   main Init strcpy serial_setup configure_serial_interrupts read_char 
-  get_next_command 
+  get_next_command send_char send_message 
 SECTION: ".data"
-  bookend serial_port 
+  bookend serial_port test_char 
 SECTION: ".bss"
-  string_ready mode counter.1 
+  string_ready mode counter.1 index.2 
 SECTION: ".init"
   _Startup 
 SECTION: ".rodata1"
@@ -1637,7 +1641,7 @@ OBJECT LIST SORTED BY ADDRESS
      _SCI0DRL                                    CF       1       1       0   .abs_section_cf
      _SCI1BD                                     D0       2       2       0   .abs_section_d0
      _SCI1CR1                                    D2       1       1       0   .abs_section_d2
-     _SCI1CR2                                    D3       1       1       0   .abs_section_d3
+     _SCI1CR2                                    D3       1       1       1   .abs_section_d3
      _SCI1SR1                                    D4       1       1       0   .abs_section_d4
      _SCI1SR2                                    D5       1       1       0   .abs_section_d5
      _SCI1DRH                                    D6       1       1       0   .abs_section_d6
@@ -1851,26 +1855,30 @@ OBJECT LIST SORTED BY ADDRESS
      _CAN4TXDLR                                 2BC       1       1       0   .abs_section_2bc
      _CAN4TXTBPR                                2BD       1       1       0   .abs_section_2bd
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
-     bookend                                   1100       1       1       1   .data       
-     serial_port                               1101       C      12       4   .data       
-     string_ready                              110D       2       2       2   .bss        
-     mode                                      110F       2       2       1   .bss        
-     counter.1                                 1111       2       2       4   .bss        
-     out_buffer                                1113     100     256       2   .common     
-     trans_buffer                              1213     100     256       1   .common     
+     bookend                                   1100       1       1       2   .data       
+     serial_port                               1101       C      12       6   .data       
+     test_char                                 110D       1       1       1   .data       
+     string_ready                              110E       2       2       2   .bss        
+     mode                                      1110       2       2       1   .bss        
+     counter.1                                 1112       2       2       4   .bss        
+     index.2                                   1114       2       2       4   .bss        
+     out_buffer                                1116     100     256       2   .common     
+     trans_buffer                              1216     100     256       2   .common     
      _Startup                                  C000       B      11       0   .init       
      STRING.This.is.a.test.1                   C015       F      15       1   .rodata1    
      _CASE_CHECKED_BYTE                        C024      14      20       1   NON_BANKED  
-     UnimplementedISR                          C038       2       2      62   NON_BANKED  
-     serial_ISR                                C03A      16      22       1   NON_BANKED  
+     UnimplementedISR                          C038       2       2      61   NON_BANKED  
+     serial_ISR                                C03A      2F      47       2   NON_BANKED  
      _vect                                     FF80      7E     126       0   .abs_section_ff80
-     main                                    308000      3D      61       2   .text       
-     Init                                    30803D      29      41       2   .text       
-     strcpy                                  308066       D      13       2   .text       
-     serial_setup                            308073      3C      60       2   .text       
-     configure_serial_interrupts             3080AF       9       9       2   .text       
-     read_char                               3080B8      34      52       2   .text       
-     get_next_command                        3080EC      12      18       2   .text       
+     main                                    308000      44      68       2   .text       
+     Init                                    308044      29      41       2   .text       
+     strcpy                                  30806D       D      13       2   .text       
+     serial_setup                            30807A      3C      60       2   .text       
+     configure_serial_interrupts             3080B6       9       9       2   .text       
+     read_char                               3080BF      34      52       2   .text       
+     get_next_command                        3080F3      12      18       2   .text       
+     send_char                               308105      11      17       4   .text       
+     send_message                            308116      3E      62       2   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -1898,19 +1906,22 @@ rtshc12.c.o (ansib.lib):
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xC050 ---- SIZE       4 ---
+------- ROM-ADDRESS: 0xC069 ---- SIZE       4 ---
 Filling bytes inserted
- 000D1100
-------- ROM-ADDRESS: 0xC054 ---- RAM-ADDRESS: 0x1100 ---- SIZE       1 ---
+ 000E1100
+------- ROM-ADDRESS: 0xC06D ---- RAM-ADDRESS: 0x1100 ---- SIZE       1 ---
 Name of initialized Object : bookend
  0D
-------- ROM-ADDRESS: 0xC055 ---- SIZE       1 ---
+------- ROM-ADDRESS: 0xC06E ---- SIZE       1 ---
 Filling bytes inserted
  00
-------- ROM-ADDRESS: 0xC056 ---- RAM-ADDRESS: 0x1102 ---- SIZE      11 ---
+------- ROM-ADDRESS: 0xC06F ---- RAM-ADDRESS: 0x1102 ---- SIZE      11 ---
 Name of initialized Object : serial_port:1
- D000D100D2 00D300D700 D4
-------- ROM-ADDRESS: 0xC061 ---- SIZE       2 ---
+ C800C900CA 00CB00CF00 CC
+------- ROM-ADDRESS: 0xC07A ---- RAM-ADDRESS: 0x110D ---- SIZE       1 ---
+Name of initialized Object : test_char
+ 30
+------- ROM-ADDRESS: 0xC07B ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -1918,16 +1929,17 @@ Filling bytes inserted
 OBJECT-DEPENDENCIES SECTION
 ---------------------------------------------------------------------------------------------
 _Startup                  USES __SEG_END_SSTACK Init main 
-serial_ISR                USES serial_port out_buffer bookend string_ready 
-                                read_char 
+serial_ISR                USES serial_port trans_buffer bookend send_message 
+                                out_buffer string_ready read_char 
 _vect                     USES UnimplementedISR serial_ISR 
 main                      USES serial_port serial_setup mode 
                                 configure_serial_interrupts get_next_command trans_buffer 
-                                STRING.This.is.a.test.1 strcpy 
+                                STRING.This.is.a.test.1 strcpy _SCI1CR2 
 Init                      USES _startupData 
 serial_setup              USES _CASE_CHECKED_BYTE 
 read_char                 USES counter.1 
 get_next_command          USES string_ready out_buffer 
+send_message              USES index.2 test_char send_char 
 
 *********************************************************************************************
 DEPENDENCY TREE
@@ -1958,6 +1970,10 @@ DEPENDENCY TREE
  |    
  +- serial_ISR          
     | 
+    +- send_message        
+    |  | 
+    |  +- send_char           
+    |       
     +- read_char           
          
 *********************************************************************************************
@@ -1966,6 +1982,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 7
-Total size of all blocks to be downloaded: 481
+Number of blocks to be downloaded: 8
+Total size of all blocks to be downloaded: 593
 

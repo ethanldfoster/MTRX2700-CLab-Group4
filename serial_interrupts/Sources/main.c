@@ -10,7 +10,8 @@ char trans_buffer[256];
 char bookend = '\r';
 volatile int test = 0;
 
-SerialPort serial_port = {&SCI1BDH, &SCI1BDL, &SCI1CR1, &SCI1CR2, &SCI1DRL, &SCI1SR1};
+//SerialPort serial_port = {&SCI1BDH, &SCI1BDL, &SCI1CR1, &SCI1CR2, &SCI1DRL, &SCI1SR1};
+SerialPort serial_port = {&SCI0BDH, &SCI0BDL, &SCI0CR1, &SCI0CR2, &SCI0DRL, &SCI0SR1};
 
 
 /*1 for recieving, 0 for transmitting*/
@@ -34,18 +35,16 @@ void main(void)
          
   }else{
     strcpy(trans_buffer, "This is a test");
-    *(serial_port.control_register_2) &= 0b10000000;
+    *(serial_port.control_register_2) = SCI1CR2_RE_MASK|SCI1CR2_TE_MASK|SCI1CR2|SCI1CR2_SCTIE_MASK;
     
-    
+    EnableInterrupts;   
     
   }
   
   
   
   for(;;){
-    _FEED_COP();
-    
-    
+    _FEED_COP();    
     
         
   }

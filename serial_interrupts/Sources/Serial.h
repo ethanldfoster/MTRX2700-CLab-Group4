@@ -15,6 +15,7 @@ extern SerialPort serial_port;
 extern char out_buffer[];
 extern int string_ready;
 extern char bookend;
+extern char trans_buffer[];
 
 enum {
   BAUD_9600,
@@ -29,6 +30,8 @@ void serial_setup(int baudRate, SerialPort *serial_port);
 void configure_serial_interrupts(SerialPort *serial_port);
 void read_char(SerialPort *serial_port, char* buffer, char bookend, int* string_ready);
 char *get_next_command(void);
+void send_char(SerialPort *serial_port, char data);
+void send_message(SerialPort* serial_port, char* message, char bookend);
 
 __interrupt void serial_ISR(void);
 
