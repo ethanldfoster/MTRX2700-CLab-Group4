@@ -2,8 +2,14 @@
 #include "derivative.h"      /* derivative-specific definitions */
 #include "Serial.h"
 #include "parser.h"
+#include "music.h"
 #include <string.h>
 #include <stdlib.h>
+
+// Global Value to all changing notes
+int currentNote = 0;
+int notfinished = 0;
+unsigned char overflow = 0;
 
 /*Global variables used for interrupts*/
 int string_ready = 0;
@@ -23,6 +29,7 @@ char command[256];
 
 void main(void) {
    int i;
+   
   
    /*Set baud rate and control register 1*/
   serial_setup(BAUD_9600, &serial_port);
