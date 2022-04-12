@@ -10,6 +10,8 @@ typedef struct SerialPort {
   byte *status_register;
 } SerialPort;
 
+#define MAX_INPUT_LEN 256
+
 /*The following global variables are used in the ISR*/
 extern SerialPort serial_port;
 extern char in_buffer[];
@@ -32,7 +34,7 @@ void configure_recieve_interrupts(SerialPort *serial_port);
 void configure_transmit_interrupts(SerialPort *serial_port);
 void read_char(SerialPort *serial_port, char* buffer, char bookend, int* string_ready);
 char *get_next_input(void);
-void clear_buffer(int len);
+void clear_buffer(int len, char buffer[]);
 void send_char(SerialPort *serial_port, char data);
 void send_message(SerialPort* serial_port, char* message, char bookend);
 

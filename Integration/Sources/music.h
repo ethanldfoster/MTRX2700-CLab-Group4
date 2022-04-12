@@ -11,14 +11,9 @@
 #define B 24490
 #define rest 00000
 
-// Global Value to all changing notes
-extern int currentNote;
-extern int notfinished;
-extern unsigned char overflow;
 
-
-
-void music_setup(void);
+void enable_speaker(void);
+void disable_speaker(void);
 void inbetween_delay(void);
 void delay1(void);
 void delay2(void);
@@ -27,7 +22,7 @@ void songPlay(int songNumber);
 void print_seg(int songNumber);
 
 __interrupt void TC5_ISR(void);
-__interrupt void TOF_ISR(void);
+
 
 
 #endif

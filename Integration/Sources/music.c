@@ -3,18 +3,19 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include "Serial.h"
+#include "serial.h"
 #include "parser.h"
 #include "music.h"
+
+// Global Value to all changing notes
+int currentNote = 0;
 
 // Song List
 int starWars[36]  = {A,2,A,2,A,2,F,1,C,1,A,2,F,1,C,1,A,3,E,2,E,2,E,2,F,1,C,1,A,2,F,1,C,1,A,3};  // 18 note imperial march in c major, number represent lnegth of notes, 1 = quaver, 2 = crotchet, 3 = half note
 int pirates[32] = {A,1,C,1,D,2,D,2,D,1,E,1,F,2,F,2,F,1,G,1,E,2,E,2,D,1,C,1,C,1,D,3};            //16 notes pirates of caribbean
 int greenSleeves[36] = {F,3,G,2,A,3,B,1,A,2,G,3,E,2,C,3,D,1,E,2,F,3,D,2,D,3,C,1,D,2,E,3,C,2,A,3};
 
-
-
-void music_setup(void){
+void enable_speaker(void){
    __asm(sei);         //  Disable Interrupts Globally
     DDRB = 0xFF;        //  PORTB Output
     DDRP = 0xFF;        //  PORTP Output to Seven Segment Display
@@ -26,6 +27,21 @@ void music_setup(void){
     TCTL1 = 0x04;       // Toggle PT5 pin upon match
     TIE   = 0x20;       // Enable Interrupt for Channel 5
     TFLG1 = 0x20;       // Clear C5F
+    __asm(cli);          // Enable Interrupts Globally
+}
+
+void disable_speaker(void){
+   __asm(sei);         //  Disable Interrupts Globally
+    DDRB = 0x00;        //  PORTB Output
+    DDRP = 0x00;        //  PORTP Output to Seven Segment Display
+    PTP  = 0x00;        //  Write number of the song on 7-segment LEDs.
+     
+ 
+    TSCR1 = 0x00;       // Timer Enable
+    TIOS  = 0x00;       // Select Channel 5 for output compare
+    TCTL1 = 0x00;       // Toggle PT5 pin upon match
+    TIE   = 0x00;       // Enable Interrupt for Channel 5
+    TFLG1 = 0x00;       // Clear C5F
     __asm(cli);          // Enable Interrupts Globally
 }
 
@@ -284,16 +300,7 @@ void print_seg(int songNumber){
 __interrupt void TC5_ISR(void)
 {
  
- TC5   = TC5 + currentNote;             // Update to TC5 
+ TC5   = TC5 + currentNote;             // Update to TC5
  TFLG1 = 0x20;                        // Clear C5F
 
-}
-
-
-#pragma CODE_SEG __NEAR_SEG NON_BANKED
-// Interrupt Service Routine to Timer Overflow 
-__interrupt void TOF_ISR(void) 
-{
-  overflow++;                       // Increment Count
-  TFLG2 = TFLG2 | TFLG2_TOF_MASK;   // Clear Flag
 }
