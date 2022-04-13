@@ -17,13 +17,18 @@ The serial output module is interfaced with using the `print` keyword for serial
 ### Music Module
 In the music module, the 7 notes that will be used are defined in a .h file. These sound values correlated with each note on a musical scale A-G as well as a 'rest' value that has no sound. 
 
-Within the `music.c` file, all the code necessary for understanding the command input and outputing music is present. The file starts with a definition of the 3 songs that this module can play. The songs are built using a letter number pairing. The letter is the note to be played and the number is the length of time (1-3) which has being defined. 
+Within the `music.c` file, all the code necessary for understanding the command input and outputing music is present and to execute this moduel the keyword 'music' is used. The file starts with a definition of the 3 songs that this module can play. The songs are built using a letter number pairing. The letter is the note to be played and the number is the length of time (1-3) which has being defined. 
 
 All relevants ports that need to be enabled/disabled are done so in the `enable_speaker` & `disable_speaker` functions, which will be called in the main function. 
 
 To create, the time that a not plays for 3 delay functions have being written. These unitlise the timer and overflow flags. Using different prescalars to create different 'delays'. This will make the note play for a longer or shorter time depending on the delay. An 'inbetween' delay function is also used to create spaces in between notes so there is not one continuous sound.
 
 The `songPlay` function will put all the information together based on the song that has being choosen to be played by the inputed command (1-3). This will loop through each note & time length and correctly execute it on the dragon board. The note is read first, followed by the delay command (1-3) which is assigned to the correct delay function. The number of the song executed (1-3) is also displayed on the 7seg display on the dragon board. After each note is played, the 'inbetween' function is called to create a gap between each note.
+
+The module begins by initialising all the various ports needed for the task such as B and H for output/input, and the 7 seg display to display the song number that is being played. Once the input parameter determining the song to be played is received the module jumps to the correct playing condition within the songPlay() function. The program loops through every note within the predefined array and loads PortB (output port) with said note and then executes one of the delay functions depending on the duration of that note.
+
+There are 4 delays functions, and they work by looping through a differential amount of clock overflows. For a quaver we have 100 clock overflows, for a crotched we have 200 clock overflows and for a half note we have a 400-clock overflow delay. The last delay function is set in-between every not and lasts for only 25 clock overflows. During this delay we load port B with a very low note (almost imperceptible) to give the illusion that there are gaps between the notes. We found if we did not do this, multiple consecutive notes would appear to be one long note and the tune would not sound as it is supposed to. This process loops and repeats until the input parameters are satisfied.
+
 
 ### 7 Segment Module
 
