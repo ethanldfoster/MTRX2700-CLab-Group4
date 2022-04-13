@@ -31,5 +31,5 @@ There are 4 delays functions, and they work by looping through a differential am
 
 
 ### 7 Segment Module
-
+The 7 segment module outputs a single digit to one of the 7 segment displays for a specified amount of time. It is interfaced using the `7segs` command. The first parameter to input is the digit you want to display, and the second parameter is how long you want to display it for in seconds. When the keyword is input and the parameters parsed, the `enable_7seg()` function turns on the 7 segment and writes the appropriate code to output the desired digit. The `delay_ms()` function is then used to create the desired delay before the `clear_7seg` blanks the 7 segment.
 
