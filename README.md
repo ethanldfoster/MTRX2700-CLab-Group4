@@ -5,7 +5,7 @@ Ethan Foster, George Head, Sam Kember
 ## Modules
 This project was split into specific modules, each of which add a different functionality. The project was desgined such that adding more commands/functions would be as simple as adding another module.
 
-**Testing**
+**Testing**\\
 Each of the modules were tested using the CodeWarrior simulator and debugger. This involed stepping through each line of code, inspecting specific memory locations and setting breakpoints to ensure the code was working as intended. Additionally the physical HCS12 Dragonboard was used to test, particularly for the 7 segment and music modules.
 
 ### Serial input
