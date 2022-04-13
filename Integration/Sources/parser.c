@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "serial.h"
 #include "parser.h"
+#include "7seg.h"
 
 char param1[MAX_INPUT_LEN - 1];
 char param2[MAX_INPUT_LEN];
@@ -71,10 +72,39 @@ void parse_command(char* command){
       /*disable speaker*/
       disable_speaker();
       
+    }else if(!strcmp(function, "7segs")){
+        char* to_display;
+        char* time;
+    
+        /*get digit to display*/
+        to_display = get_next_input();
+        strcpy(param1, to_display);
+        i = strlen(to_display);
+        clear_buffer(i, in_buffer);
+        
+        /*get time to display for*/
+        time = get_next_input();
+        strcpy(param2, time);
+        i = strlen(time);
+        clear_buffer(i, in_buffer);
+        
+        /*display the given digit*/
+        enable_7seg(atoi(param1));
+        
+        /*delay by specified time*/
+        delay_ms(1000 * atoi(param2));
+        
+        /*clear 7 seg*/
+        clear_7seg();
+      
+    
     }else{
       /*in case the command is not valid, output error message*/
+      char err_msg[40] = "Please enter a valid function";
+      strncat(err_msg, &bookend, 1);
+      
       clear_buffer(MAX_INPUT_LEN, trans_buffer);
-      print_command("Please enter a valid function", 1);
+      print_command(err_msg, 1);
       
     }
 
@@ -83,16 +113,5 @@ void parse_command(char* command){
 }
 
 
-/*called to transmit via serial using interrupts*/
-void print_command(char* message, int times){ 
-  /*load the output buffer*/ 
-  strcpy(trans_buffer, message);
-  
-  /*specify how many times to repeat*/
-  repetitions = times;
-  
-  /*enable interrupts*/
-  configure_transmit_interrupts(&serial_port);
-  return;
-}
+
   

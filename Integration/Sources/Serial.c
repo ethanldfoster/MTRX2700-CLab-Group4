@@ -85,8 +85,16 @@ void read_char(SerialPort *serial_port, char* buffer, char bookend, int* string_
   
   /*error checking for if the buffer overflows*/
   if(counter >= MAX_INPUT_LEN){
-    clear_buffer(MAX_INPUT_LEN, in_buffer);	
-    print_command("Maximum input length exceeded", 1);
+  
+    char err_msg[40] = "Maximum input length exceeded";
+    strncat(err_msg, &bookend, 1);
+    
+    counter = 0; 
+    clear_buffer(MAX_INPUT_LEN, in_buffer);      
+    clear_buffer(MAX_INPUT_LEN, trans_buffer);
+    
+    print_command(err_msg, 1);	
+
   }
     
   return;
@@ -159,6 +167,21 @@ void send_message(SerialPort* serial_port, char* message, char bookend){
   }
   
   
+}
+
+
+
+/*called to transmit via serial using interrupts*/
+void print_command(char* message, int times){ 
+  /*load the output buffer*/ 
+  strcpy(trans_buffer, message);
+  
+  /*specify how many times to repeat*/
+  repetitions = times;
+  
+  /*enable interrupts*/
+  configure_transmit_interrupts(&serial_port);
+  return;
 }
 
 

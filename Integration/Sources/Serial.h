@@ -37,6 +37,7 @@ char *get_next_input(void);
 void clear_buffer(int len, char buffer[]);
 void send_char(SerialPort *serial_port, char data);
 void send_message(SerialPort* serial_port, char* message, char bookend);
+void print_command(char* message, int times);
 
 __interrupt void serial_ISR(void);
 

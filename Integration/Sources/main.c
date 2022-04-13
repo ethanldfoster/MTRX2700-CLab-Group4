@@ -3,6 +3,7 @@
 #include "serial.h"
 #include "parser.h"
 #include "music.h"
+#include "7seg.h"
 #include <string.h>
 #include <stdlib.h>
 

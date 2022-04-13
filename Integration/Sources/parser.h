@@ -11,6 +11,6 @@ extern char bookend;
 
 void parse_command(char* command);
 int parse_parameters(char* command, char* parameters[]);
-void print_command(char* message, int times);
+
 
 #endif
