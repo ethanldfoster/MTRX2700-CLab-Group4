@@ -3,7 +3,10 @@
 Ethan Foster, George Head, Sam Kember
 
 ## Modules
-This project was split into specific modules, each of which add a different functionality. The project was desgined such that adding more commands/functions would be as simple as adding another module. Each of the modules were tested using the CodeWarrior simulator and debugger, as well as using the physical HCS12 Dragonboard, particularly for the 7 segment and music modules.
+This project was split into specific modules, each of which add a different functionality. The project was desgined such that adding more commands/functions would be as simple as adding another module.
+
+**Testing**
+Each of the modules were tested using the CodeWarrior simulator and debugger. This involed stepping through each line of code, inspecting specific memory locations and setting breakpoints to ensure the code was working as intended. Additionally the physical HCS12 Dragonboard was used to test, particularly for the 7 segment and music modules.
 
 ### Serial input
 The serial input module allows the microcontroller to recieve data through its serial port(s). This module uses interrupts from the RDRF flag, such that time is not wasted polling the serial port. This module is interfaced with in `main.c ` by first selecting SCI0 or SCI1, enabling recive interrupts and calling the `get_next_input()` function. As serial data becomes available, an interrupt is triggered, and the data is read from the serial port into a buffer using `read_char()`. When the specified `bookend` character appears in the serial ports data register, a flag is raised and the input buffer is returned by `get_next_input`.
