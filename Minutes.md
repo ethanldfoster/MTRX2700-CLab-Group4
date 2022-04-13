@@ -44,4 +44,4 @@ Ongoing discussion surround how to design the assignment
 Start to put together all the different bits of the assignment 
 
 Next Meeting: 13/4/2022 (Assignment Due)
-![image](https://user-images.githubusercontent.com/102562097/163091339-19d8e3c5-f963-4c0c-8308-670972f023a2.png)
+
