@@ -225,32 +225,7 @@ void songPlay(int songNumber)
       }
     }
     
-    if(songNumber == 12)                      // PTH = 00000001
-    {  
-       
-      for(i = 0; i < 36; i++){
-                                 
-         print_seg(songNumber);                    // Write 1 number to number of song on 7-segment LEDs.
-         i++;
-         
-         if(greenSleeves[i] == 1){
-            delay1();
-         }
-         if(greenSleeves[i] == 2){
-            delay2();
-         }
-         if(greenSleeves[i] == 3){
-            delay3();
 
-
-         }
-         
-         //this puts a very short delay in between notes so that you can tell the difference between repeated notes
-         print_seg(songNumber);
-         inbetween_delay();
-         
-      }
-    }
         
  
 }
@@ -282,13 +257,7 @@ void print_seg(int songNumber){
         PORTB = 0x4F;                     // Write 1 number to number of song on 7-segment LEDs.
  
     }
-    if(songNumber == 9)                  
-    {  
-       
 
-        PORTB = 0x4F;                     // Write 1 number to number of song on 7-segment LEDs.
- 
-    }
        
     
 }
